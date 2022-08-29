@@ -577,7 +577,8 @@ have{cEE} [F [outF [inF outFK inFK] E_F]]:
   Time pose F : finFieldType := HB.pack Fring IsField.
   pose outaM := GRing.isAdditive.Build Fring _ _ (raddfB outF).
   pose outmM := GRing.isMultiplicative.Build _ _ _ outRM.
-  pose outRMT := GRing.RMorphism.Pack (GRing.RMorphism.Class outaM outmM).
+  pose outRMT : GRing.RMorphism.type Fring _ :=
+    HB.pack (outF : _ -> _) outaM outmM.
   by exists F, outRMT; first exists inF.
 pose in_uF (a : F) : {unit F} := insubd (1 : {unit F}) a.
 have in_uF_E a: a != 1 -> val (in_uF a) = a.
@@ -660,7 +661,7 @@ have etaRM w: w \in W1 -> (additive (eta w) * multiplicative (eta w)).
   do 2![split=> //] => [a b|]; last exact: eta1.
   rewrite -[a]outFK; have /envelop_mxP[d ->] := E_F a.
   pose etaaM := GRing.isAdditive.Build _ _ _ etaD.
-  pose etaA := GRing.Additive.Pack (GRing.Additive.Class etaaM).
+  pose etaA : GRing.Additive.type _ _ := HB.pack (fun_of_perm _) etaaM.
   rewrite raddf_sum mulr_suml ![eta w _](raddf_sum etaA) mulr_suml.
   apply: eq_bigr => _ /morphimP[x Nx Ux ->]; move: {d}(d _) => dx.
   rewrite -[dx]natr_Zp scaler_nat !(mulrnAl, raddfMn); congr (_ *+ dx)%R.
@@ -693,10 +694,10 @@ exists F.
     exists (val r) => f g fRM gRM eq_fgr; apply/permP=> a.
     pose faM := GRing.isAdditive.Build _ _ _ fRM.1.
     pose fmM := GRing.isMultiplicative.Build _ _ _ fRM.2.
-    pose fRMT := GRing.RMorphism.Pack (GRing.RMorphism.Class faM fmM).
+    pose fRMT : GRing.RMorphism.type _ _ := HB.pack (fun_of_perm f) faM fmM.
     pose gaM := GRing.isAdditive.Build _ _ _ gRM.1.
     pose gmM := GRing.isMultiplicative.Build _ _ _ gRM.2.
-    pose gRMT := GRing.RMorphism.Pack (GRing.RMorphism.Class gaM gmM).
+    pose gRMT : GRing.RMorphism.type _ _ := HB.pack (fun_of_perm g) gaM gmM.
     rewrite (_ : f =1 fRMT) // (_ : g =1 gRMT) //.
     have [-> | /in_uF_E <-] := eqVneq a 0%R; first by rewrite !rmorph0.
     have /cycleP[m ->]: in_uF a \in <[r]> by rewrite -def_uF inE.
@@ -727,7 +728,7 @@ exists F.
     move=> fRM.
     pose faM := GRing.isAdditive.Build _ _ _ fRM.1.
     pose fmM := GRing.isMultiplicative.Build _ _ _ fRM.2.
-    pose fRMT := GRing.RMorphism.Pack (GRing.RMorphism.Class faM fmM).
+    pose fRMT : GRing.RMorphism.type _ _ := HB.pack (fun_of_perm f) faM fmM.
     suff <-: map_poly fRMT P = P by apply: rmorph_root.
     apply/polyP=> i; rewrite coef_map.
     have [/(nth_default _)-> | lt_i_P] := leqP (size P) i; first exact: rmorph0.
@@ -774,7 +775,7 @@ apply/kerP; rewrite (morphM, groupM) ?morphV ?groupV //.
 apply/(canLR (mulKg _))/val_inj; rewrite psiJ // mulg1 def_psi_x.
 pose etaaM := GRing.isAdditive.Build _ _ _ (etaRM w Ww).1.
 pose etamM := GRing.isMultiplicative.Build _ _ _ (etaRM w Ww).2.
-pose etaRMT := GRing.RMorphism.Pack (GRing.RMorphism.Class etaaM etamM).
+pose etaRMT : GRing.RMorphism.type _ _ := HB.pack (fun_of_perm _) etaaM etamM.
 exact: (rmorph_nat etaRMT).
 Qed.
 

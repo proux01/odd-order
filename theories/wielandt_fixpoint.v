@@ -1,5 +1,6 @@
 (* (c) Copyright 2006-2016 Microsoft Corporation and Inria.                  *)
 (* Distributed under the terms of CeCILL-B.                                  *)
+From HB Require Import structures.
 Require Import mathcomp.ssreflect.ssreflect.
 From mathcomp
 Require Import ssrbool ssrfun eqtype ssrnat seq path div.
@@ -276,7 +277,7 @@ have gim : multiplicative gi.
   by apply: val_inj; rewrite -natrM /= !val_Fp_nat ?modn_dvdm // Zp_cast.
 pose giaM := GRing.isAdditive.Build _ _ gi gia.
 pose gimM := GRing.isMultiplicative.Build _ _ gi gim.
-pose giRM := GRing.RMorphism.Pack (GRing.RMorphism.Class giaM gimM).
+pose giRM : GRing.RMorphism.type _ _ := HB.pack gi giaM gimM.
 have [gL [DgL _ _ _]] := domP (invm_morphism injL) (congr_group imfL).
 pose g u := map_mx giRM (gL u).
 have gM: {in L &, {morph g : u v / u * v}}.
@@ -540,10 +541,10 @@ have toWlin a1: linear (fun u => fW' (fW u ^ val (subg G1 a1))).
   rewrite morphM ?memJ_norm ?(subsetP nWG1) ?subgP //=; congr (_ * _).
   rewrite -(natr_Zp z) !scaler_nat morphX ?in_setT // conjXg morphX //.
   by rewrite memJ_norm // (subsetP nWG1) ?subgP.
-pose toWaM a1 := GRing.isAdditive.Build _ _ _ (additive_linear (toWlin a1)).
-pose toWlM a1 := GRing.isLinear.Build _ _ _ _ _ (scalable_linear (toWlin a1)).
-pose rW a1 :=
-  lin1_mx (GRing.Linear.Pack (GRing.Linear.Class (toWaM a1) (toWlM a1))).
+pose toWlM a1 := GRing.linear_isLinear.Build _ _ _ _ _ (toWlin a1).
+pose rWL a1 : GRing.Linear.type _ _ :=
+  HB.pack (fun u => fW' (fW u ^ val (subg G1 a1))) (toWlM a1).
+pose rW a1 := lin1_mx (rWL a1).
 pose fG := restrm sG1D f; have im_fG : fG @* G1 = G by rewrite im_restrm.
 have injfG: 'injm fG by rewrite -tiWG1 setIC ker_restrm kerf setIS ?Mho_sub.
 pose fG' := invm injfG; have im_fG': fG' @* G = G1 by rewrite -im_fG im_invm.
@@ -608,9 +609,8 @@ have mkMx m1 m2 (U : {group 'rV['Z_q]_m1}) (g : {morphism U >-> 'rV['Z_q]_m2}):
   have lin_g : linear g.
     move=> z u v; rewrite morphM ?allU ?in_setT //.
     by rewrite -(natr_Zp z) !scaler_nat -zmodXgE morphX ?allU ?in_setT.
-  pose gaM := GRing.isAdditive.Build _ _ _ (additive_linear lin_g).
-  pose glM := GRing.isLinear.Build _ _ _ _ _ (scalable_linear lin_g).
-  pose gL := GRing.Linear.Pack (GRing.Linear.Class gaM glM).
+  pose glM := GRing.linear_isLinear.Build _ _ _ _ _ lin_g.
+  pose gL : GRing.Linear.type _ _ := HB.pack (mfun g) glM.
   by exists (lin1_mx gL) => u; rewrite mul_rV_lin1.
 have /mkMx[Pu defPu]: setT \subset 'dom (invm injfW \o invm injhR).
   by rewrite -sub_morphim_pre -im_hR // im_invm //= im_fW.
