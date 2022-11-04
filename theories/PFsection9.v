@@ -2145,7 +2145,7 @@ have [Gamma [S4_Gamma normGamma [b Dbeta]]]:
     by case/andP=> /andP[-> /cfAut_seqInd->].
   have ubG: '[G] + (b ^+ 2 - b) * (u %/ a).*2%:R + '[Delta] = 1.
     apply: (addrI ((u %/ a) ^ 2)%:R); transitivity '[beta^\tau].
-      rewrite -!addrA addrCA Dbeta cfnormDd; last first.
+      rewrite -!addrA [_%:R + _]addrCA Dbeta cfnormDd; last first.
         by rewrite cfdotC (span_orthogonal oG'4) ?rmorph0 // memv_span ?inE.
       congr (_ + _); rewrite !addrA dG' cfnormDd; last first.
         by rewrite cfdotC (span_orthogonal oD1) ?rmorph0 // memv_span ?inE.

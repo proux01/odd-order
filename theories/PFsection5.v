@@ -1177,7 +1177,7 @@ have [lam Zlam [Z oZS1 defY]]:
   rewrite !cfdotBl !cfdotZl Itau1 ?mem_zchar //.
   rewrite cfproj_sum_orthogonal ?map_f // a_E // Itau1 ?Z_S1 //.
   apply: (mulIf nz_xi11); rewrite divfK ?nz_nS1 // 2!mulrBl [in lam * _]mulrA divfK //.
-  rewrite mul0r mulrBl opprB -addrA addrCA addrC !addrA !oXtau1 // !mulNr.
+  rewrite mul0r mulrBl opprB -addrA [LHS]addrCA addrC !addrA !oXtau1 // !mulNr.
   rewrite -(conj_Cnat (N_S1_1 _ S1xi)) -(conj_Cnat (N_S1_1 _ S1xi1)).
   rewrite opprK [- _ + _]addrC -!(mulrC _^*) -!cfdotZr -cfdotBr.
   rewrite -!raddfZ_Cnat ?N_S1_1 // -raddfB; set beta : 'CF(L) := _ - _.
@@ -1313,8 +1313,8 @@ have [X [RchiX nX defX] XD_N]: exists2 X, Xspec X & XDspec X.
   have /R_P[_ _ defRxi1] := Sxi1; have [-> // | xi1'xi] := eqVneq xi xi1.
   have [sRchiX sRxi1X1] := (zchar_span RchiX, zchar_span Rxi1X1).
   have [-> | xi2'xi] := eqVneq xi xi2.
-    rewrite /D -[chi1](subrK xi1) -addrA linearD cfdotDr XD_N defRxi1 big_seq.
-    rewrite (span_orthogonal (oR chi1 xi1 _ _)) ?addr0 ?rpred_sum //.
+    rewrite /D -[chi1](subrK xi1) -[_ - xi2]addrA linearD cfdotDr XD_N defRxi1.
+    rewrite big_seq (span_orthogonal (oR chi1 xi1 _ _)) ?addr0 ?rpred_sum //.
     exact/memv_span.
   have /haveX[X' [RchiX' nX' _] [Rxi3X' X'D_N]] := S2xi.
   have [sRchiX' sRxi1X'] := (zchar_span RchiX', zchar_span Rxi3X').
@@ -1597,7 +1597,7 @@ have [j [k ne_kj phi_tau]] := vchar_norm2 Zphi_tau norm_phi_tau.
 suffices def_k: conjC_Iirr j = k by exists j; rewrite -conjC_IirrE def_k.
 have/esym:= eq_subZnat_irr 1 1 k j (conjC_Iirr j) (conjC_Iirr k).
 rewrite (negPf ne_kj) orbF /= !scale1r !conjC_IirrE -rmorphB.
-rewrite -opprB -phi_tau /= -Dade_conjC // rmorphB /= cfConjCK.
+rewrite -['chi_k - 'chi_j]opprB -phi_tau /= -Dade_conjC // rmorphB /= cfConjCK.
 by rewrite -linearN opprB eqxx => /andP[/eqP->].
 Qed.
 

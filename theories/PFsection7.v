@@ -740,7 +740,8 @@ case/(_ lt_e_h2)=> min_rho1 maxGamma _ {lt_e_h2}.
 pose calB := [set i | (i != i1) && (c i i1 == 0)].
 pose sumB := \sum_(i in calB) (h_ i - 1) / (e_ i * h_ i).
 suffices{min_rho1} sumB_max: sumB <= (e - 1) / (h + 2%:R).
-  rewrite -subr_ge0 opprB addrCA -opprB subr_ge0; apply: le_trans sumB_max.
+  rewrite -subr_ge0 opprB addrCA -[_ / _ - _]opprB subr_ge0.
+  apply: le_trans sumB_max.
   rewrite -subr_ge0 opprB addrCA -(opprB _ sumB) subr_ge0.
   have Zchi1: chi i1 \in 'Z[irr G] by rewrite Znu ?seqInd_zcharW ?Sr.
   have [eps [t def_chi1]] := vchar_norm1P Zchi1 (n1Snu i1 'chi_(r i1) (Sr i1)).

@@ -876,7 +876,7 @@ Proof.
 move=> nz_j nz_k eq_mu2jk_1.
 have [-> | k'j] := eqVneq j k; first by rewrite !subrr !raddf0.
 have [[Itau Ztau] [_ Zsigma]] := (Dade_Zisometry ddA0, cycTI_Zisometry ctiWL).
-set dmu2 := _ - _; set dsw := _ - _; have Dmu2 := prTIirr_id ptiWL.
+set dsw := _ - _; set dmu2 := _ - _; have Dmu2 := prTIirr_id ptiWL.
 have Zmu2: dmu2 \in 'Z[irr L, A0].
   by rewrite zchar_split rpredB ?irr_vchar ?prDade_sub_TIirr_on.
 apply: eq_signed_sub_cTIiso => // [||x Vx].

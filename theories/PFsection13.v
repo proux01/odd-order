@@ -560,7 +560,7 @@ exists alpha => //; split=> //.
     by rewrite -[a1 * _]mulrA -(mulrA a); congr (_ * _); rewrite -mulrA mulrC.
   rewrite mulrBr; congr (_ - _); last first.
     by rewrite mulrACA -expr2 -!exprMn mulrAC.
-  rewrite -mulrA exprMn -mulrA; congr (_ * _); rewrite expr2 -mulrA.
+  rewrite -[RHS]mulrA exprMn -mulrA; congr (_ * _); rewrite expr2 -mulrA.
   congr (_ * _); apply: canLR (mulKf (cfnorm_seqInd_neq0 nsHS S1zeta1)) _.
   rewrite (cfnormE (cfun_onG _)) mulVKf ?neq0CG // mulrC.
   rewrite (cfnormE (seqInd_on nsHS S1zeta1)) mulVKf ?neq0CG //.

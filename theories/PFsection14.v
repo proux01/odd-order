@@ -254,7 +254,7 @@ have ub_e: e%:R <= #|Iirr W|%:R ?= iff (e == p * q)%N :> algC.
 have /(_ predT) := leif_add (leif_sum (in1W lb_b)) lbY.
 rewrite sumr_const addr0 => /(leif_trans ub_e)/ge_leif/esym.
 have ->: \sum_i `|b (sigma 'chi_i)| ^+ 2 = '[X].
-  rewrite defX cfnorm_sum_orthonormal // big_map (big_nth 0) big_mkord.
+  rewrite defX cfnorm_sum_orthonormal // big_map [RHS](big_nth 0) big_mkord.
   by rewrite size_tuple; apply: eq_bigr => ij _; rewrite -tnth_nth.
 rewrite -cfnormDd // -defGa cfnormDd // cfnorm1 -ler_subr_addr ubGa.
 case/and3P=> /eqP-De /'forall_exists_eqP/fin_all_exists[/= n Dn] /eqP-Y0.
@@ -1006,7 +1006,8 @@ have{rho sumG0 sumG0_diff ub_rho lb_rho} []:
   ~ pq / k%:R + 2%:R / pq + (u * q)%:R^-1 + (v * p)%:R^-1 < p%:R^-1 + q%:R^-1.
 - rewrite le_gtF // -!addrA -ler_subl_addl -ler_subr_addl -(ler_add2l 1).
   apply: le_trans {ub_rho lb_rho}(le_trans lb_rho ub_rho) _.
-  rewrite /sumG0_diff -!addnA natrD opprD addrA mulrBr opprB addrA.
+  rewrite /sumG0_diff -!addnA natrD opprD.
+  rewrite [sumG0 + _]addrA mulrBr opprB [leLHS]addrA.
   rewrite ler_subl_addr ler_paddr //.
     by rewrite mulr_ge0 ?invr_ge0 ?ler0n // subr_ge0 -sumr_const ler_sum.
   rewrite mulrDl -!addrA addrCA [1 + _]addrA [_ + (_ - _)]addrA ler_add //.
